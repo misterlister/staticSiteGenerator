@@ -1,10 +1,10 @@
 import unittest
 
-from htmlnode import HTMLNode
+from htmlnode import HTMLNode, LeafNode, ParentNode
 
 class TestHTMLNode(unittest.TestCase):
 
-    # Equal
+    # HTMLNode
 
     def test_eq_empty(self):
         node = HTMLNode()
@@ -37,8 +37,6 @@ class TestHTMLNode(unittest.TestCase):
         expected_string = " href=\"https://www.google.com\" target=\"_blank\""
         self.assertEqual(converted_string, expected_string)
 
-    # Not Equal
-
     def test_different_tag(self):
         node = HTMLNode("h1")
         node2 = HTMLNode("h2")
@@ -58,3 +56,60 @@ class TestHTMLNode(unittest.TestCase):
         node = HTMLNode(None, None, None, {"href": "https://www.google.com", "target": "_blank"})
         node2 = HTMLNode(None, None, None, {"href": "https://www.googlez.com", "target": "_blank"})
         self.assertNotEqual(node.props, node2.props)
+
+    # LeafNode
+
+    def test_empty_value_leaf(self):
+        node = LeafNode(None, None)
+        html_string = node.to_html()
+        error_string = html_string.args[0]
+        expected_string = "Error: Invalid HTML: no value"
+        self.assertEqual(error_string, expected_string)
+
+    def test_p_tag_leaf(self):
+        node = LeafNode("p", "This is a leaf")
+        html_string = node.to_html()
+        expected_string = "<p>This is a leaf</p>"
+        self.assertEqual(html_string, expected_string)
+
+    def test_a_tag_leaf(self):
+        node = LeafNode("a", "This is a link", {"href": "https://www.test.com"})
+        html_string = node.to_html()
+        expected_string = "<a href=\"https://www.test.com\">This is a link</a>"
+        self.assertEqual(html_string, expected_string)
+
+    # ParentNode
+        
+    def test_parentNode_html_single_child(self):
+        node = ParentNode("p", 
+                          [
+                              LeafNode("b", "Bold text")
+                          ])
+        html_string = node.to_html()
+        expected_string = "<p><b>Bold text</b></p>"
+        self.assertEqual(html_string, expected_string)
+
+    def test_parentNode_html_multiple_children(self):
+        node = ParentNode("p", 
+                          [
+                              LeafNode("b", "Bold text"),
+                              LeafNode("i", "italic text"),
+                              LeafNode(None, "Regular text")
+                          ])
+        html_string = node.to_html()
+        expected_string = "<p><b>Bold text</b><i>italic text</i>Regular text</p>"
+        self.assertEqual(html_string, expected_string)
+
+    def test_parentNode_html_single_nest(self):
+        node = ParentNode("div", 
+                          [
+                              ParentNode("p", [
+                                  LeafNode("b", "Bold text")
+                                  ])
+                          ])
+        html_string = node.to_html()
+        expected_string = "<div><p><b>Bold text</b></p></div>"
+        self.assertEqual(html_string, expected_string)
+
+if __name__ == "__main__":
+    unittest.main()

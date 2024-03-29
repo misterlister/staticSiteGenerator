@@ -1,2 +1,3 @@
 # staticSiteGenerator
-A Python program that can generate a static site
+
+A Python program that can convert Markdown documents into HTML
