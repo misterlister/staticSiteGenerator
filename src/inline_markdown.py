@@ -11,6 +11,14 @@ from textnode import (
 import re
 
 
+def text_to_textnodes(text):
+    nodes = [TextNode(text, TEXT_TYPE_TEXT)]
+    nodes = split_nodes_delimiter(nodes, "**", TEXT_TYPE_BOLD)
+    nodes = split_nodes_delimiter(nodes, "*", TEXT_TYPE_ITALIC)
+    nodes = split_nodes_delimiter(nodes, "`", TEXT_TYPE_CODE)
+    nodes = split_nodes_image(nodes)
+    nodes = split_nodes_link(nodes)
+    return nodes
 
 def split_nodes_delimiter(old_nodes, delimiter, text_type):
     new_nodes = []
@@ -86,4 +94,3 @@ def split_nodes_link(old_nodes):
         else:
             new_nodes.append(node)
     return new_nodes
-
