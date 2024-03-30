@@ -48,6 +48,10 @@ class ParentNode(HTMLNode):
             raise ValueError("Error: Empty children attribute")
         html_string = f"<{self.tag}>"
         for child in self.children:
-            html_string += child.to_html()
+            try:
+                child_string = child.to_html()
+                html_string += child_string
+            except Exception as e:
+                print(e)
         html_string += f"</{self.tag}>"
         return html_string
