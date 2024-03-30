@@ -1,5 +1,6 @@
 from textnode import TextNode
-from filemanip import delete_directory, copy_dir_contents, generate_page
+from filemanip import delete_directory, copy_dir_contents
+from generate_content import generate_page
 
 static_path = "./static"
 public_path = "./public"
