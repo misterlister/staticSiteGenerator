@@ -23,7 +23,7 @@ def text_to_textnodes(text):
 def split_nodes_delimiter(old_nodes, delimiter, text_type):
     new_nodes = []
     for node in old_nodes:
-        if isinstance(node, TextNode):
+        if node.text_type == TEXT_TYPE_TEXT:
             if delimiter in node.text:
                 split_text = node.text.split(delimiter)
                 if len(split_text) % 2 == 0:
@@ -34,6 +34,8 @@ def split_nodes_delimiter(old_nodes, delimiter, text_type):
                             new_nodes.append(TextNode(split_text[i], node.text_type))
                         else:
                             new_nodes.append(TextNode(split_text[i], text_type))
+            else:
+                new_nodes.append(node)
                 
         else:
             new_nodes.append(node)
