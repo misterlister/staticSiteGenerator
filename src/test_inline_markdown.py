@@ -20,7 +20,7 @@ from textnode import (
 )
 
 
-class TestTextNode(unittest.TestCase):
+class TestInlineMarkdown(unittest.TestCase):
     
     # Delimiter
     
