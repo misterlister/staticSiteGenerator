@@ -40,3 +40,15 @@ def generate_page(from_path, template_path, dest_path):
         print("Error: Could not write to destination file")
         return
     
+def generate_pages_recursive(dir_path_content, template_path, dest_dir_path):
+    files = os.listdir(dir_path_content)
+    for file in files:
+        filepath = os.path.join(dir_path_content, file)
+        if os.path.isfile(filepath):
+            if filepath.endswith(".md"):
+                html_path = dest_dir_path + "/" + file.strip("md") + "html"
+                print(html_path)
+                generate_page(filepath, template_path, html_path)
+        elif os.path.isdir(filepath):
+            new_dir_path = dest_dir_path + "/" + file
+            generate_pages_recursive(filepath, template_path, new_dir_path)
