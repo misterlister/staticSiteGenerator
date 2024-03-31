@@ -1,4 +1,3 @@
-from textnode import TextNode
 from filemanip import delete_directory, copy_dir_contents
 from generate_content import generate_pages_recursive
 
